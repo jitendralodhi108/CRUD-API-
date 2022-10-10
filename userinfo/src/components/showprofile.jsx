@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { useSelector } from "react-redux";
 import { useDispatch } from 'react-redux';
 import {useParams} from "react-router-dom";
-import { showuser } from '../Redux/action'
+import { ShowUser, showuser } from '../Redux/action'
 import axios from "axios";
 
 const Showprofile = () => {
@@ -12,20 +12,12 @@ const Showprofile = () => {
     const dispatch = useDispatch()
     const storedata = useSelector(state => state)
     const { id } = useParams()
-    // console.log(id)
 
     useEffect(() => {
-        axios({
-            method: 'get',
-            url: `https://reqres.in/api/users/${id}`
-        }).then((response) => {
-            dispatch(showuser(response.data.data))
-        })
+       dispatch(ShowUser(id))
     }, [])
     return (
         <>
-            {/* {console.log(storedata)}     */}
-            {console.log(storedata.showuser[0])}
             < div class="container my-4 mx-4 emp-profile" >
                 <form method="post">
                     <div class="row">

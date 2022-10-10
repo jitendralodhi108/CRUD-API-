@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import axios from 'axios';
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { userlist ,deletbyid ,showuser} from "../Redux/action";
+import { userlist ,deletbyid ,showuser, UserList, ShowUser} from "../Redux/action";
 import { Navigate, Link } from "react-router-dom";
 
 
@@ -18,40 +18,23 @@ const Userlist = () => {
   const [Edit, setEdit] = useState('')
 
   useEffect(() => {
-    axios({
-      method: 'get',
-      url: 'https://reqres.in/api/users?page=1'
-    }).then((response) => {
-      var values = response.data.data
-      // setUser(response.data.data)
-      dispatch(userlist(values))
-    })
+    dispatch(UserList())
   }, [])
 
   function handleClick(e) {
-    var id = e.target.id
-    // console.log(id)
+    let id = e.target.id
     setID(id)
-
-    axios({
-      method: 'get',
-      url: `https://reqres.in/api/users/${id}`
-    }).then((response) => {
-      // console.log(response.data.data)
-      dispatch(showuser(response.data.data))
-      setCheck(true)
-    })
+    dispatch(ShowUser(id))
+    setCheck(true)
   }
 
   const edit = (e) => {
-    console.log(e.target.id)
     setEditid(e.target.id)
     setEdit(true)
 
   }
 
   const dlt =(id)=>{
-    console.log(id)
     const result = data.users[0].filter((item) => item.id !== id )
     dispatch(deletbyid(result))
 
@@ -61,10 +44,6 @@ const Userlist = () => {
       <>
         {check ? <Navigate to={`/showprofile/${id}`} /> : ''}
         {Edit ? <Navigate to={`/editprofile/${Editid}`} /> : ''}
-
-        {/* {console.log(data.users[0])} */}
-        {/* {console.log(data.users[0])} */}
-        {/* {console.log(data.showuser[0])} */}
 
         {/* Displaying user names  */}
         <div class="container">

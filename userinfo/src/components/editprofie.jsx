@@ -1,29 +1,23 @@
 import React from "react";
 import { useState, useEffect, useRef } from "react";
-import { Link } from 'react-router-dom'
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { updatebyid, showuser } from "../Redux/action";
+import { updatebyid, showuser, ShowUser, UpdateInfo } from "../Redux/action";
 
 const Showprofile = () => {
     const dispatch = useDispatch()
     const storedata = useSelector(state => state)
-    const [ data,setData] = useState({})
-
-    const [setfield , setField] = useState('')
-
+    const [ data,setData] = useState(storedata.showuser[0])
     const { id } = useParams()
-
+   
     useEffect(() => {
-        axios({
-            method: 'get',
-            url: `https://reqres.in/api/users/${id}`
-        }).then((response) => {
-            dispatch(showuser(response.data.data))
-            setData(response.data.data)
-        })
+       dispatch(ShowUser(id))
     }, [])
+
+    useEffect(()=>{
+        setData(storedata.showuser[0])
+       },[storedata])
 
     const handleChange = (e)=>{
         const value = e.target.value ;
@@ -35,22 +29,20 @@ const Showprofile = () => {
     }
 
     const updatinfo = (id) => {
-        console.log(data,'before');
-        axios.post(`https://reqres.in/api/users/${id}`, data, { 'Content-Type': 'application/json' })
-            .then(response => {
-                dispatch(updatebyid(response.data))
-                    setField('true')
-            });
-            console.log(data,'after');
+       dispatch(UpdateInfo(id,data)) 
+        // axios.post(`https://reqres.in/api/users/${id}`, data, { 'Content-Type': 'application/json' })
+        //     .then(response => {
+        //         dispatch(updatebyid(response.data))
+        //     });
+        console.log(data,'data');
     }
     return (
         <>
-            {storedata.showuser.length > 0 && console.log(storedata.showuser[0])}
             < div class="container my-4 mx-4 emp-profile" >
                 <div class="row">
                     <div class="col-md-4">
                         <div class="profile-img">
-                            {storedata.showuser.length>0 &&  <img src={storedata.showuser[0].avatar} alt="" /> }
+                            {storedata.showuser.length>0 &&  <img src={storedata.showuser[0]?.avatar} alt="Image" /> }
                         </div>
                     </div>
                     <form>
@@ -58,14 +50,14 @@ const Showprofile = () => {
                             <div class="profile-head">
 
                                 {/* updataed name  */}
-                                {storedata.showuser.length > 0 && storedata.showuser[0].firstname} {storedata.showuser.length > 0 && storedata.showuser[0].lastname}
+                                {/* {storedata.showuser.length > 0 && storedata.showuser[0]?.first_name} {storedata.showuser.length > 0 && storedata.showuser[0]?.last_name} */}
                                 {/* orignal name  */}
-                                {storedata.showuser.length > 0 && storedata.showuser[0].first_name} {storedata.showuser.length > 0 && storedata.showuser[0].last_name}
+                                {storedata.showuser.length > 0 && storedata.showuser[0]?.first_name} {storedata.showuser.length > 0 && storedata.showuser[0]?.last_name}
                                 <br />
-                                {!setfield.length>0 && <div class=" my-2 btn-btn-primary text-info" >You can update Detatils here....! </div>}
-                                {!setfield.length>0  &&  <input type='text' name='first_name' placeholder="first_name" value={data.first_name} onChange={handleChange}></input>}
+                                <div class=" my-2 btn-btn-primary text-info" >You can update Detatils here....! </div>
+                                <input type='text' name='first_name' placeholder="first_name" value={data?.first_name} onChange={handleChange}></input>
                                 <br></br>
-                                {!setfield.length>0 &&  <input type='text' name="last_name" placeholder="last_name" value={data.last_name} onChange={handleChange}></input>}
+                             <input type='text' name="last_name" placeholder="last_name" value={data?.last_name} onChange={handleChange}></input>
                                
                                 <br />
                                 
@@ -73,7 +65,7 @@ const Showprofile = () => {
                                 <h6 class="my-2" >
                                     Web Developer and Designer
                                 </h6>
-                                <p class="proile-rating">{storedata.showuser.length > 0 && storedata.showuser[0].email}</p>
+                                <p class="proile-rating">{storedata.showuser.length > 0 && storedata.showuser[0]?.email}</p>
                             </div>
                         </div>
                         <br />
@@ -87,7 +79,7 @@ const Showprofile = () => {
                         </div> */}
 
                 </div>
-                <div class="mx-4">    <button type="'submit" class='btn-primary' id="djffff" onClick={(event) => updatinfo(event, storedata.showuser[0].id)}> save </button>  </div>
+                <div class="mx-4">    <button type="'submit" class='btn-primary' id="djffff" onClick={() => updatinfo(storedata.showuser[0]?.id)}> save </button>  </div>
 
 
                 <hr style={{ border: "2px solid black" }} />
