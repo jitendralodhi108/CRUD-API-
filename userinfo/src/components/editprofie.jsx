@@ -9,13 +9,11 @@ import { updatebyid, showuser } from "../Redux/action";
 const Showprofile = () => {
     const dispatch = useDispatch()
     const storedata = useSelector(state => state)
+    const [ data,setData] = useState({})
 
     const [setfield , setField] = useState('')
-    const username = useRef('')
-    const userlastname = useRef('')
 
     const { id } = useParams()
-    // console.log(id)
 
     useEffect(() => {
         axios({
@@ -23,23 +21,27 @@ const Showprofile = () => {
             url: `https://reqres.in/api/users/${id}`
         }).then((response) => {
             dispatch(showuser(response.data.data))
+            setData(response.data.data)
         })
     }, [])
 
-    const updatinfo = (event, id) => {
-        var userdata = {
-            firstname: username.current.value,
-            lastname: userlastname.current.value,
-        }
-        axios.post(`https://reqres.in/api/users/${id}`, userdata, { 'Content-Type': 'application/json' })
+    const handleChange = (e)=>{
+        const value = e.target.value ;
+        const keyy = e.target.name
+        setData({
+            ...data,
+            [keyy]: value
+        })
+    }
+
+    const updatinfo = (id) => {
+        console.log(data,'before');
+        axios.post(`https://reqres.in/api/users/${id}`, data, { 'Content-Type': 'application/json' })
             .then(response => {
-                // console.log(response.data)
                 dispatch(updatebyid(response.data))
-                if (response.data)
-                {
                     setField('true')
-                }
             });
+            console.log(data,'after');
     }
     return (
         <>
@@ -61,9 +63,9 @@ const Showprofile = () => {
                                 {storedata.showuser.length > 0 && storedata.showuser[0].first_name} {storedata.showuser.length > 0 && storedata.showuser[0].last_name}
                                 <br />
                                 {!setfield.length>0 && <div class=" my-2 btn-btn-primary text-info" >You can update Detatils here....! </div>}
-                                {!setfield.length>0  &&  <input type='text' placeholder="first name" ref={username}></input>}
+                                {!setfield.length>0  &&  <input type='text' name='first_name' placeholder="first_name" value={data.first_name} onChange={handleChange}></input>}
                                 <br></br>
-                                {!setfield.length>0 &&  <input type='text' placeholder="last name" ref={userlastname}></input>}
+                                {!setfield.length>0 &&  <input type='text' name="last_name" placeholder="last_name" value={data.last_name} onChange={handleChange}></input>}
                                
                                 <br />
                                 
