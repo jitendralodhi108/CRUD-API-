@@ -3,6 +3,7 @@
 const InitialState = {
     users:[],
     showuser:[],
+    DataLoaded:true
 }
 
 export const Reducer = (state=InitialState, action)=>{
@@ -11,7 +12,7 @@ export const Reducer = (state=InitialState, action)=>{
     {
         case "saveusers": return ({
             ...state,
-            users:[...state.users,action.payload]
+            users:[action.payload]
         })
         case 'showuser': return ({
             ...state,
@@ -25,6 +26,10 @@ export const Reducer = (state=InitialState, action)=>{
             ...state,
             showuser:[action.payload],
             
+        })
+        case 'isDataLoaded': return ({
+            ...state,
+            DataLoaded:action.payload
         })
 
         default: return ( InitialState )

@@ -8,11 +8,11 @@ export const ShowUser = (id) => {
     }
 }
 
-export const UserList = () => {
+export const UserList = (page) => {
     return async(dispatch) => {
-        const resp = await axios.get('https://reqres.in/api/users?page=1');
+        const resp = await (page ? axios.get(`https://reqres.in/api/users?page=${page}`) : axios.get(`https://reqres.in/api/users?page=1`));
         const {data : {data}} = resp
-        return dispatch(userlist(data))
+        return dispatch(data.length ? userlist(data) : isDataLoaded(false))
     }
 }
 
@@ -50,4 +50,12 @@ export const updatebyid = (data)=>{
         type:'updatbyid',
         payload:data
     })
+}
+
+export const isDataLoaded = (data) =>{
+    return({
+        type:"isDataLoaded",
+        payload:data,
+    })
+
 }
