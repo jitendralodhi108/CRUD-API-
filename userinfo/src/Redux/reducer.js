@@ -1,38 +1,35 @@
-
-
 const InitialState = {
-    users:[],
-    showuser:[],
-    DataLoaded:true
+    users: [],
+    showuser: [],
+    DataLoaded: true
 }
 
-export const Reducer = (state=InitialState, action)=>{
+export const Reducer = (state = InitialState, action) => {
 
-    switch(action.type)
-    {
-        case "saveusers": return ({
+    switch (action.type) {
+        case 'saveusers': return ({
             ...state,
-            users:[action.payload]
+            users: [action.payload]
         })
         case 'showuser': return ({
             ...state,
-            showuser:[action.payload],
+            showuser: [action.payload],
         })
-        case 'delete': return({
+        case 'delete': return ({
             ...state,
-            users : [action.payload]
+            users: [action.payload]
         })
-        case 'updatbyid': return({
+        case 'updatbyid': return ({
             ...state,
-            showuser:[action.payload],
-            
+            showuser: [action.payload],
+
         })
         case 'isDataLoaded': return ({
             ...state,
-            DataLoaded:action.payload
+            DataLoaded: action.payload
         })
 
-        default: return ( InitialState )
+        default: return (InitialState)
     }
 
 }

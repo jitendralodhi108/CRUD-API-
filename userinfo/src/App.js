@@ -5,24 +5,18 @@ import Userlist from './components/userlist';
 import Showprofile from './components/showprofile';
 import Navbar from './components/navbar';
 
-
-
-
 function App() {
   return (
-   
-  <>
-
-    <BrowserRouter>
-    <Navbar/>
-      <Routes>
-        <Route exact path='/' element={<Userlist />} />
-        <Route path='/showprofile/:id' element={ <Showprofile  />}/>
-        <Route path='/editprofile/:id' element={ <Editprofile  />}/>
-
-      </Routes>
-    </BrowserRouter>
-  </>);
+    <>
+      <BrowserRouter>
+        <Navbar />
+        <Routes>
+          <Route exact path='/' element={<Userlist />} />
+          <Route path='/showprofile/:id' element={<Showprofile />} />
+          <Route path='/editprofile/:id' element={<Editprofile />} />
+        </Routes>
+      </BrowserRouter>
+    </>);
 }
 
 export default App;

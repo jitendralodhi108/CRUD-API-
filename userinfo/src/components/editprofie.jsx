@@ -1,26 +1,25 @@
 import React from "react";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { updatebyid, showuser, ShowUser, UpdateInfo } from "../Redux/action";
+import { ShowUser, UpdateInfo } from "../Redux/action";
 
 const Showprofile = () => {
     const dispatch = useDispatch()
     const storedata = useSelector(state => state)
-    const [ data,setData] = useState(storedata.showuser[0])
+    const [data, setData] = useState(storedata.showuser[0])
     const { id } = useParams()
-   
+
     useEffect(() => {
-       dispatch(ShowUser(id))
+        dispatch(ShowUser(id))
     }, [])
 
-    useEffect(()=>{
+    useEffect(() => {
         setData(storedata.showuser[0])
-       },[storedata])
+    }, [storedata])
 
-    const handleChange = (e)=>{
-        const value = e.target.value ;
+    const handleChange = (e) => {
+        const value = e.target.value;
         const keyy = e.target.name
         setData({
             ...data,
@@ -29,12 +28,7 @@ const Showprofile = () => {
     }
 
     const updatinfo = (id) => {
-       dispatch(UpdateInfo(id,data)) 
-        // axios.post(`https://reqres.in/api/users/${id}`, data, { 'Content-Type': 'application/json' })
-        //     .then(response => {
-        //         dispatch(updatebyid(response.data))
-        //     });
-        console.log(data,'data');
+        dispatch(UpdateInfo(id, data))
     }
     return (
         <>
@@ -42,26 +36,19 @@ const Showprofile = () => {
                 <div class="row">
                     <div class="col-md-4">
                         <div class="profile-img">
-                            {storedata.showuser.length>0 &&  <img src={storedata.showuser[0]?.avatar} alt="Image" /> }
+                            {storedata.showuser.length > 0 && <img src={storedata.showuser[0]?.avatar} alt="Image" />}
                         </div>
                     </div>
                     <form>
                         <div class="col-md-12">
                             <div class="profile-head">
-
-                                {/* updataed name  */}
-                                {/* {storedata.showuser.length > 0 && storedata.showuser[0]?.first_name} {storedata.showuser.length > 0 && storedata.showuser[0]?.last_name} */}
-                                {/* orignal name  */}
                                 {storedata.showuser.length > 0 && storedata.showuser[0]?.first_name} {storedata.showuser.length > 0 && storedata.showuser[0]?.last_name}
                                 <br />
                                 <div class=" my-2 btn-btn-primary text-info" >You can update Detatils here....! </div>
                                 <input type='text' name='first_name' placeholder="first_name" value={data?.first_name} onChange={handleChange}></input>
                                 <br></br>
-                             <input type='text' name="last_name" placeholder="last_name" value={data?.last_name} onChange={handleChange}></input>
-                               
+                                <input type='text' name="last_name" placeholder="last_name" value={data?.last_name} onChange={handleChange}></input>
                                 <br />
-                                
-
                                 <h6 class="my-2" >
                                     Web Developer and Designer
                                 </h6>
@@ -69,14 +56,7 @@ const Showprofile = () => {
                             </div>
                         </div>
                         <br />
-
-
                     </form>
-
-
-                    {/* <div class="col-md-2">
-                            <Link to='/editprofile' class="profile-edit-btn" name="btnAddMore"> Edit profile </Link>
-                        </div> */}
 
                 </div>
                 <div class="mx-4">    <button type="'submit" class='btn-primary' id="djffff" onClick={() => updatinfo(storedata.showuser[0]?.id)}> save </button>  </div>
@@ -196,7 +176,6 @@ const Showprofile = () => {
                     </div>
                 </div>
             </div>
-
         </>
     )
 }

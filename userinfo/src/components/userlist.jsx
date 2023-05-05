@@ -2,13 +2,11 @@ import React from "react";
 import { useState, useEffect } from 'react'
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { userlist, deletbyid, showuser, UserList, ShowUser } from "../Redux/action";
+import { deletbyid, UserList, ShowUser } from "../Redux/action";
 import { Navigate } from "react-router-dom";
 
 
 const Userlist = () => {
-
-  //requiring use selector and dispatch
   const dispatch = useDispatch()
   const data = useSelector(state => state)
   const [check, setCheck] = useState()
@@ -38,23 +36,21 @@ const Userlist = () => {
     dispatch(deletbyid(result))
   }
 
-  const LoadNextPage = (page)=>{
+  const LoadNextPage = (page) => {
     setPageVal(page)
     dispatch(UserList(page))
   }
 
-  const LoadPrevPage = (page)=>{
-    (page>=1) ? setPageVal(page-1):setPageVal(1); 
+  const LoadPrevPage = (page) => {
+    (page >= 1) ? setPageVal(page - 1) : setPageVal(1);
     setPageVal(page)
     dispatch(UserList(page))
   }
 
   return (
     <>
-    {console.log(data.DataLoaded)}
       {check ? <Navigate to={`/showprofile/${id}`} /> : ''}
       {Edit ? <Navigate to={`/editprofile/${Editid}`} /> : ''}
-
       {/* Displaying user names  */}
       <div className="container">
         <div className="row">
@@ -111,21 +107,19 @@ const Userlist = () => {
                         </tr>
                       )
                     })}
-
                   </tbody>
                 </table>
               </div>
-
               <nav aria-label="Page navigation example">
                 <ul className="pagination justify-content-center">
                   <li className="page-item">
-                    <button className="page-link" aria-label="Previous" onClick={()=>{LoadPrevPage(PageVal-1)}} disabled = {PageVal <= 1}>
+                    <button className="page-link" aria-label="Previous" onClick={() => { LoadPrevPage(PageVal - 1) }} disabled={PageVal <= 1}>
                       <span aria-hidden="true">&laquo;</span>
                     </button>
                   </li>
                   <li className="page-item"><a className="page-link" href="#">{PageVal}</a></li>
                   <li className="page-item">
-                    <button className="page-link" aria-label="Next" disabled={!data.DataLoaded} onClick={()=>{LoadNextPage(PageVal+1)}}>
+                    <button className="page-link" aria-label="Next" disabled={!data.DataLoaded} onClick={() => { LoadNextPage(PageVal + 1) }}>
                       <span aria-hidden="true">&raquo;</span>
                     </button>
                   </li>
